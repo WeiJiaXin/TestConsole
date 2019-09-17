@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -22,12 +23,39 @@ namespace Lowy.DebugConsole
         protected override void Start()
         {
             base.Start();
-            onClick.AddListener(OpenWindow);
+            onClick.AddListener(OpenOrCloseWindow);
+        }
+
+        public void TipsNewMsa()
+        {
+            if (!gameObject.activeInHierarchy)
+                return;
+            if (root.activeInHierarchy)
+                return;
+            transform.DOScale(Vector3.one * 1.3f, 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
         }
         
-        private void OpenWindow()
+        private void OpenOrCloseWindow()
         {
             root.SetActive(!root.activeInHierarchy);
+            transform.localScale=Vector3.one;
+            transform.DOKill();
+        }
+
+        public void OpenWindow()
+        {
+            if(root.activeInHierarchy)
+                return;
+            OpenOrCloseWindow();
+            root.SetActive(true);
+        }
+        
+        public void CloseWindow()
+        {
+            if(!root.activeInHierarchy)
+                return;
+            OpenOrCloseWindow();
+            root.SetActive(false);
         }
 
         public override void OnPointerDown(PointerEventData eventData)

@@ -51,7 +51,7 @@ namespace Lowy.DebugConsole
             _workButtons.Clear();
             //
             bool hasSendBtn = false;
-            foreach (var arg in _command.args)
+            foreach (var arg in _command._args)
             {
                 switch (arg.argType)
                 {
